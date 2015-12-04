@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
               Toast.makeText(mContext,"正在刷新",Toast.LENGTH_SHORT).show();
-              // loadData();
+              loadData();
             }
 
             @Override
