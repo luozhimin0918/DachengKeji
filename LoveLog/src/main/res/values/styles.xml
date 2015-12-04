@@ -1,0 +1,42 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+
+
+
+
+
+
+
+
+
+    <!-- 默认风格 -->
+    <style name="BrowserThemeDefault" parent="android:Theme.Holo.Light">
+        <item name="flash_blow">#edf9ff</item>
+        <item name="flash_blow_bg">#ffffff</item>
+        <item name="flash_bg">#ffffff</item>
+        <item name="flash_tv">#666666</item>
+        <item name="flash_top">#116bcc</item>
+        <item name="android:windowIsTranslucent">true</item>
+
+    </style>
+
+    <!-- 夜间模式 -->
+    <style name="BrowserThemeNight" parent="android:Theme.Holo.Light">
+        <item name="flash_blow">#04274c</item>
+        <item name="flash_blow_bg">#04274c</item>
+        <item name="flash_bg">#031e3c</item>
+        <item name="flash_tv">#999999</item>
+        <item name="flash_top">#04274c</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+
+
+
+
+</resources>

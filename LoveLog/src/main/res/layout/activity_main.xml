@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/main_zt_color"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@color/white"
+              android:orientation="vertical" >
+
+    <FrameLayout
+            android:id="@+id/frame_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+           >
+    </FrameLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray" >
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/mian_ll_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:background="?attr/flash_blow_bg"
+            android:orientation="horizontal" >
+
+        <LinearLayout
+                android:id="@+id/mian_ll_flash"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+            <ImageView
+                    android:id="@+id/imgflash"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/skin_tabbar_icon_flash_select" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/mian_ll_yw"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+            <ImageView
+                    android:id="@+id/imgjw"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/skin_tabbar_icon_jw_select" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/mian_ll_hq"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+            <ImageView
+                    android:id="@+id/imghq"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/skin_tabbar_icon_hq_select" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+                android:id="@+id/mian_ll_self"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:gravity="center" >
+
+            <ImageView
+                    android:id="@+id/imgself"
+                    android:layout_width="20dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/skin_tabbar_icon_self_select" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
