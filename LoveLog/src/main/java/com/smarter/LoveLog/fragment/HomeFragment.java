@@ -1,13 +1,16 @@
 package com.smarter.LoveLog.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +18,28 @@ import android.view.ViewGroup;
 import android.widget.*;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.smarter.LoveLog.R;
 import com.smarter.LoveLog.activity.ProductDeatil;
 import com.smarter.LoveLog.adapter.Adapter_GridView;
 import com.smarter.LoveLog.adapter.ImagePagerAdapter;
+import com.smarter.LoveLog.adapter.MyAdapter;
+import com.smarter.LoveLog.http.FastJsonRequest;
+import com.smarter.LoveLog.model.Weather;
+import com.smarter.LoveLog.model.WeatherInfo;
 import com.smarter.LoveLog.ui.AutoScrollViewPager;
 import com.smarter.LoveLog.ui.MyGridView;
-import com.smarter.LoveLog.utills.DeviceUtil;
 import com.smarter.LoveLog.utills.ListUtils;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.StoreHouseHeader;
+import org.json.JSONObject;
+
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -41,8 +53,11 @@ public class HomeFragment extends Fragment {
     private View view;
     Context mContext;
 
-    @Bind(R.id.rotate_header_list_view_frame)
-    PtrClassicFrameLayout mPtrFrame;
+    @Bind(R.id.recyclerview)
+    XRecyclerView mRecyclerView;
+
+    private MyAdapter mAdapter;
+
     //首页轮播
     private AutoScrollViewPager viewPager;
      /**首页轮播的界面的资源*/
@@ -55,7 +70,8 @@ public class HomeFragment extends Fragment {
     private MyGridView gridView_classify;
     private Adapter_GridView adapter_GridView_classify;
         /* 分类九宫格的资源文件*/
-    private int[] pic_path_classify = { R.mipmap.menu_guide_1, R.mipmap.menu_guide_2, R.mipmap.menu_guide_3, R.mipmap.menu_guide_4, R.mipmap.menu_guide_5, R.mipmap.menu_guide_6, R.mipmap.menu_guide_7, R.mipmap.menu_guide_8 };
+    private int[] pic_path_classify = { R.mipmap.icon01, R.mipmap.icon02, R.mipmap.icon03, R.mipmap.icon04, R.mipmap.icon05, R.mipmap.icon06, R.mipmap.icon07, R.mipmap.icon08 };
+    private int[] lit_int_resuour={R.mipmap.list1,R.mipmap.list2};
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +82,7 @@ public class HomeFragment extends Fragment {
 
             ButterKnife.bind(this, view);
             initFind();
+            getJSONByVolley();
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
             if (parent != null) {
@@ -81,45 +98,148 @@ public class HomeFragment extends Fragment {
          *
          */
 
-        // header custom begin
-        final StoreHouseHeader header = new StoreHouseHeader(mContext);
-        header.setPadding(0, DeviceUtil.dp2px(mContext, 15), 0, 0);
-        header.initWithString("Fine");
-       mPtrFrame.setHeaderView(header);
-       mPtrFrame.addPtrUIHandler(header);
 
-        // 下拉刷新
-        mPtrFrame.setLastUpdateTimeRelateObject(this);
-        mPtrFrame.setPtrHandler(new PtrHandler() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mRecyclerView.setLaodingMoreProgressStyle(ProgressStyle.BallRotate);
+        mRecyclerView.setArrowImageView(R.mipmap.iconfont_downgrey);
+
+       View header =   LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_header,null);
+        View footer= LayoutInflater.from(getContext()).inflate(R.layout.home_fragment_foot,null);
+        mRecyclerView.addHeaderView(header);
+        mRecyclerView.addFootView(footer);
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-              Toast.makeText(mContext,"正在刷新",Toast.LENGTH_SHORT).show();
-              loadData();
+            public void onRefresh() {
+
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                         String url="http://www.weather.com.cn/data/sk/101010100.html";
+                        RequestQueue mQueue = Volley.newRequestQueue(getContext());
+                        FastJsonRequest<Weather> fastJson=new FastJsonRequest<Weather>(url, Weather.class,
+                                new Response.Listener<Weather>() {
+
+                                    @Override
+                                    public void onResponse(Weather weather) {
+                                        // TODO Auto-generated method stub
+                                        WeatherInfo weatherInfo = weather.getWeatherinfo();
+                                        Log.d("HomeFragment",""+weatherInfo.getCity()+">>>"+weatherInfo.toString());
+                                        mRecyclerView.refreshComplete();
+                                    }
+                                }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError arg0) {
+                                // TODO Auto-generated method stub
+                                mRecyclerView.refreshComplete();
+                            }
+                        });
+                        mQueue.add(fastJson);
+
+
+
+
+
+
+                    }
+
+                }, 1000);            //refresh data here
             }
 
             @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            public void onLoadMore() {
+
+                   /* new Handler().postDelayed(new Runnable() {
+                        public void run() {
+
+
+                            mRecyclerView.loadMoreComplete();
+                        }
+                    }, 1000);*/
+
             }
         });
+
+
+        mAdapter = new MyAdapter(lit_int_resuour);
+
+        mRecyclerView.setAdapter(mAdapter);
         /**
          * 轮播广告
          */
-        viewPager = (AutoScrollViewPager) view.findViewById(R.id.viewPager_menu);
-        viewgroup =(ViewGroup) view.findViewById(R.id.viewgroup);
+        viewPager = (AutoScrollViewPager) header.findViewById(R.id.viewPager_menu);
+        viewgroup =(ViewGroup) header.findViewById(R.id.viewgroup);
         initViewPager();
 
         /**
          * 分类grid
          */
-        gridView_classify = (MyGridView) view.findViewById(R.id.my_gridview);
+        gridView_classify = (MyGridView) header.findViewById(R.id.my_gridview);
         initGridView();
 
     }
+    /**
+     * 暂无用
+     * 利用Volley获取JSON数据
+     */
+    private void getJSONByVolley() {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        String JSONDataUrl = "http://pipes.yahooapis.com/pipes/pipe.run?_id=giWz8Vc33BG6rQEQo_NLYQ&_render=json";
+        final ProgressDialog progressDialog = ProgressDialog.show(getContext(), "This is title", "...Loading...");
 
-    private void loadData() {
-        mPtrFrame.refreshComplete();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                JSONDataUrl,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("HomeFragment",""+"Response is: "+ response);
+                        System.out.println("response="+response);
+                        if (progressDialog.isShowing()&&progressDialog!=null) {
+                            progressDialog.dismiss();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError arg0) {
+                        Log.d("HomeFragment",""+"Response is:  error");
+                        System.out.println("sorry,Error");
+                    }
+                });
+        requestQueue.add(jsonObjectRequest);
+
+
+
+
+        // Request a string response from the provided URL.
+
+                /*
+                    String url2 ="http://www.google.com";
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url2,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Display the first 500 characters of the response string.
+                                Log.d("HomeFragment",""+"Response is: "+ response.substring(0,500));
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("HomeFragment",""+"Response is: "+ "That didn't work!");
+                    }
+                });
+                // Add the request to the RequestQueue.
+                mQueue.add(stringRequest);*/
+
+        //   mQueue.start();
     }
+
+
 
     private void initGridView() {
         gridView_classify.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -137,9 +257,7 @@ public class HomeFragment extends Fragment {
 
     private void  initViewPager(){
 
-
         imageIdList = new ArrayList<Integer>();
-
         imageIdList.add( R.mipmap.menu_viewpager_2);
         imageIdList.add( R.mipmap.menu_viewpager_3);
         imageIdList.add(R.mipmap.menu_viewpager_1);
@@ -158,11 +276,10 @@ public class HomeFragment extends Fragment {
 
             //圆点之间的空白
             ImageView  kong = new ImageView(mContext);
-            params = new RelativeLayout.LayoutParams(30,0);
+            params = new RelativeLayout.LayoutParams(25,0);
 
             kong.setLayoutParams(params);
-            kong.setBackgroundColor(Color.parseColor("#000000" +
-                    ""));
+            kong.setBackgroundColor(Color.parseColor("#000000" + ""));
             viewgroup.addView(kong);
 
             imageViews[i]=new ImageView(mContext);

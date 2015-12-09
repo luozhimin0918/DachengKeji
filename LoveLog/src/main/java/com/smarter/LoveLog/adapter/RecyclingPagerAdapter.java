@@ -75,9 +75,9 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
     }
 
     /**
-     * Get the type of View that will be created by {@link #getView} for the specified item.
+     * Get the type of View that will be created by {@link #getView} for the specified xrecy_item.
      *
-     * @param position The position of the item within the adapter's data set whose view type we
+     * @param position The position of the xrecy_item within the adapter's data set whose view type we
      *        want.
      * @return An integer representing the type of View. Two views should share the same type if one
      *         can be converted to the other in {@link #getView}. Note: Integers must be in the
@@ -97,7 +97,7 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
      * {@link android.view.LayoutInflater#inflate(int, android.view.ViewGroup, boolean)}
      * to specify a root view and to prevent attachment to the root.
      *
-     * @param position The position of the item within the adapter's data set of the item whose view
+     * @param position The position of the xrecy_item within the adapter's data set of the xrecy_item whose view
      *        we want.
      * @param convertView The old view to reuse, if possible. Note: You should check that this view
      *        is non-null and of an appropriate type before using. If it is not possible to convert

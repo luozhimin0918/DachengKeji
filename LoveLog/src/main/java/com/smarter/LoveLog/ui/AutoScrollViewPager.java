@@ -27,9 +27,9 @@ import android.view.animation.Interpolator;
  * <ul>
  * <strong>Advanced Settings and Usage</strong>
  * <li>{@link #setDirection(int)} set auto scroll direction</li>
- * <li>{@link #setCycle(boolean)} set whether automatic cycle when auto scroll reaching the last or first item, default
+ * <li>{@link #setCycle(boolean)} set whether automatic cycle when auto scroll reaching the last or first xrecy_item, default
  * is true</li>
- * <li>{@link #setSlideBorderMode(int)} set how to process when sliding at the last or first item</li>
+ * <li>{@link #setSlideBorderMode(int)} set how to process when sliding at the last or first xrecy_item</li>
  * <li>{@link #setStopScrollWhenTouch(boolean)} set whether stop auto scroll when touching, default is true</li>
  * </ul>
  *
@@ -42,24 +42,24 @@ public class AutoScrollViewPager extends ViewPager {
     public static final int        LEFT                        = 0;
     public static final int        RIGHT                       = 1;
 
-    /** do nothing when sliding at the last or first item **/
+    /** do nothing when sliding at the last or first xrecy_item **/
     public static final int        SLIDE_BORDER_MODE_NONE      = 0;
-    /** cycle when sliding at the last or first item **/
+    /** cycle when sliding at the last or first xrecy_item **/
     public static final int        SLIDE_BORDER_MODE_CYCLE     = 1;
-    /** deliver event to parent when sliding at the last or first item **/
+    /** deliver event to parent when sliding at the last or first xrecy_item **/
     public static final int        SLIDE_BORDER_MODE_TO_PARENT = 2;
 
     /** auto scroll time in milliseconds, default is {@link #DEFAULT_INTERVAL} **/
     private long                   interval                    = DEFAULT_INTERVAL;
     /** auto scroll direction, default is {@link #RIGHT} **/
     private int                    direction                   = RIGHT;
-    /** whether automatic cycle when auto scroll reaching the last or first item, default is true **/
+    /** whether automatic cycle when auto scroll reaching the last or first xrecy_item, default is true **/
     private boolean                isCycle                     = true;
     /** whether stop auto scroll when touching, default is true **/
     private boolean                stopScrollWhenTouch         = true;
-    /** how to process when sliding at the last or first item, default is {@link #SLIDE_BORDER_MODE_NONE} **/
+    /** how to process when sliding at the last or first xrecy_item, default is {@link #SLIDE_BORDER_MODE_NONE} **/
     private int                    slideBorderMode             = SLIDE_BORDER_MODE_NONE;
-    /** whether animating when auto scroll at the last or first item **/
+    /** whether animating when auto scroll at the last or first xrecy_item **/
     private boolean                isBorderAnimation           = true;
     /** scroll factor for auto scroll animation, default is 1.0 **/
     private double                 autoScrollFactor            = 1.0;
@@ -73,7 +73,7 @@ public class AutoScrollViewPager extends ViewPager {
     private CustomDurationScroller scroller                    = null;
 
     public static final int        SCROLL_WHAT                 = 0;
-    /** The m on item click listener. */
+    /** The m on xrecy_item click listener. */
     public AutoScrollViewPager(Context paramContext) {
         super(paramContext);
         init();
@@ -184,8 +184,30 @@ public class AutoScrollViewPager extends ViewPager {
      * <li>if event is up, start auto scroll again.</li>
      * </ul>
      */
+    private float mDownX=0f;
+    private float mDownY=0f;
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        //解决viewPager和RecyclerView的滑动冲突
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                mDownX=ev.getX();
+                mDownY=ev.getY();
+                getParent().requestDisallowInterceptTouchEvent(true);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (Math.abs(ev.getX()-mDownX)>Math.abs(ev.getY()-mDownY)){
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                }else{
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                }
+                break;
+            case  MotionEvent.ACTION_CANCEL:
+                getParent().requestDisallowInterceptTouchEvent(false);
+                break;
+        }
+       //end
+
         int action = MotionEventCompat.getActionMasked(ev);
 
         if (stopScrollWhenTouch) {
@@ -208,7 +230,7 @@ public class AutoScrollViewPager extends ViewPager {
             /**
              * current index is first one and slide to right or current index is last one and slide to left.<br/>
              * if slide border mode is to parent, then requestDisallowInterceptTouchEvent false.<br/>
-             * else scroll to last one when current item is first one, scroll to first one when current item is last
+             * else scroll to last one when current xrecy_item is first one, scroll to first one when current xrecy_item is last
              * one.
              */
             if ((currentItem == 0 && downX <= touchX) || (currentItem == pageCount - 1 && downX >= touchX)) {
@@ -223,7 +245,7 @@ public class AutoScrollViewPager extends ViewPager {
                 return super.dispatchTouchEvent(ev);
             }
         }
-        getParent().requestDisallowInterceptTouchEvent(true);
+       // getParent().requestDisallowInterceptTouchEvent(true);
 
         return super.dispatchTouchEvent(ev);
     }
@@ -292,7 +314,7 @@ public class AutoScrollViewPager extends ViewPager {
     }
 
     /**
-     * whether automatic cycle when auto scroll reaching the last or first item, default is true
+     * whether automatic cycle when auto scroll reaching the last or first xrecy_item, default is true
      *
      * @return the isCycle
      */
@@ -301,7 +323,7 @@ public class AutoScrollViewPager extends ViewPager {
     }
 
     /**
-     * set whether automatic cycle when auto scroll reaching the last or first item, default is true
+     * set whether automatic cycle when auto scroll reaching the last or first xrecy_item, default is true
      *
      * @param isCycle the isCycle to set
      */
@@ -328,7 +350,7 @@ public class AutoScrollViewPager extends ViewPager {
     }
 
     /**
-     * get how to process when sliding at the last or first item
+     * get how to process when sliding at the last or first xrecy_item
      *
      * @return the slideBorderMode {@link #SLIDE_BORDER_MODE_NONE}, {@link #SLIDE_BORDER_MODE_TO_PARENT},
      *         {@link #SLIDE_BORDER_MODE_CYCLE}, default is {@link #SLIDE_BORDER_MODE_NONE}
@@ -338,7 +360,7 @@ public class AutoScrollViewPager extends ViewPager {
     }
 
     /**
-     * set how to process when sliding at the last or first item
+     * set how to process when sliding at the last or first xrecy_item
      *
      * @param slideBorderMode {@link #SLIDE_BORDER_MODE_NONE}, {@link #SLIDE_BORDER_MODE_TO_PARENT},
      *        {@link #SLIDE_BORDER_MODE_CYCLE}, default is {@link #SLIDE_BORDER_MODE_NONE}
@@ -348,7 +370,7 @@ public class AutoScrollViewPager extends ViewPager {
     }
 
     /**
-     * whether animating when auto scroll at the last or first item, default is true
+     * whether animating when auto scroll at the last or first xrecy_item, default is true
      *
      * @return
      */
@@ -357,7 +379,7 @@ public class AutoScrollViewPager extends ViewPager {
     }
 
     /**
-     * set whether animating when auto scroll at the last or first item, default is true
+     * set whether animating when auto scroll at the last or first xrecy_item, default is true
      *
      * @param isBorderAnimation
      */

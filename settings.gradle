@@ -1,1 +1,1 @@
-include ':LoveLog'
+include ':LoveLog', ':xrecyclerview'
