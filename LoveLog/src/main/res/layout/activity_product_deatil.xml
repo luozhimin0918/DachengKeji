@@ -14,7 +14,7 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:visibility="gone"
-                android:src="@mipmap/menu_top_left" />
+                android:src="@mipmap/menu" />
 
         <TextView
                 android:id="@+id/tv_top_title"
@@ -33,7 +33,7 @@
                 android:layout_weight="1"
                 android:padding="8dp"
                 android:visibility="gone"
-                android:src="@mipmap/menu_top_right" />
+                android:src="@mipmap/message" />
     </LinearLayout>
 
 

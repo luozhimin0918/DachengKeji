@@ -58,8 +58,9 @@ public class MainActivity extends BaseFragmentActivity  {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.foot_bar_home:   setTabSelection(0); break;
-                    case R.id.foot_bar_im:  setTabSelection(1); break;
-                    case R.id.foot_bar_interest:  setTabSelection(2); break;
+                    case R.id.foot_bar_community:setTabSelection(1);break;
+                    case R.id.foot_bar_im:  setTabSelection(2); break;
+                    case R.id.foot_bar_interest:  setTabSelection(3); break;
 
                 }
 

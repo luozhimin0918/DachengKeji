@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
 
             ButterKnife.bind(this, view);
             initFind();
-            getJSONByVolley();
+           // getJSONByVolley();
         } else {
             ViewGroup parent = (ViewGroup) mRootView.get().getParent();
             if (parent != null) {
@@ -151,13 +151,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onLoadMore() {
 
-                   /* new Handler().postDelayed(new Runnable() {
+                    new Handler().postDelayed(new Runnable() {
                         public void run() {
 
 
-                            mRecyclerView.loadMoreComplete();
+                          //  mRecyclerView.loadMoreComplete();
                         }
-                    }, 1000);*/
+                    }, 2000);
 
             }
         });

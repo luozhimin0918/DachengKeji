@@ -47,9 +47,9 @@
         <item name="android:button">@null</item>
     </style>
     <style name="main_footbar_radio" parent="footbar">
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:drawablePadding">3dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:drawablePadding">1dp</item>
         <item name="android:textSize">@dimen/text_size_11</item>
         <item name="android:textColor">@drawable/footer_text_color</item>
     </style>

@@ -9,7 +9,7 @@
     <!-- 底部导航栏背景颜色-->
     <color name="bottom_bgColor">#FAFAFA</color>
     <!-- grid字体颜色-->
-    <color name="grid_Color">#757575</color>
+    <color name="grid_Color">#A0A0A0</color>
 
     <!-- footbar字体颜色-->
     <color name="footbar_normal">#A9A9A9</color>
