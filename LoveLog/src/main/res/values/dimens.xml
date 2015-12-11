@@ -26,6 +26,9 @@
     <dimen name="margin_large_more">35dp</dimen>
 
 
+
+ <dimen name="one_space_margin">1px</dimen>
+ <dimen name="two_space_margin">2px</dimen>
     <!-- 通用 -->
     <dimen name="text_size_32">32.0sp</dimen>
     <dimen name="text_size_31">31.0sp</dimen>
