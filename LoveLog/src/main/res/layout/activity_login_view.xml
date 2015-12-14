@@ -105,13 +105,21 @@
 
         </LinearLayout>
 
-        <LinearLayout  android:id="@+id/logon" android:clickable="false" android:layout_below="@+id/inputKun"  android:layout_width="fill_parent" android:gravity="center" android:layout_marginTop="30dp" android:layout_marginBottom="10dp" android:layout_height="50dp" android:orientation="horizontal" android:background="@drawable/login_button">
+        <LinearLayout  android:id="@+id/logon" android:clickable="false" android:layout_below="@+id/inputKun"  android:layout_width="fill_parent" android:gravity="center" android:layout_marginTop="30dp"  android:layout_height="50dp" android:orientation="horizontal" android:background="@drawable/login_button">
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="登 录"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
+        </LinearLayout>
+        <LinearLayout  android:id="@+id/forgetPass" android:gravity="right|center_vertical"  android:layout_below="@+id/logon"  android:layout_width="fill_parent"   android:layout_height="40dp"  android:orientation="horizontal" >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="忘记密码？"
+                    android:textColor="@color/top_bar_bgColor"
+                    android:textSize="14sp" />
         </LinearLayout>
 
 
