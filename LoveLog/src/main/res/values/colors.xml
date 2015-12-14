@@ -2,9 +2,9 @@
 <resources>
     <!-- top导航栏bgColor-->
     <color name="top_bar_bgColor">#fc1359</color>
-
-    <!-- connet背景颜色-->
-    <color name="connet_bgColor">#FDFAF5</color>
+    <color name="top_bar_bgColor_alpha">#4ffc1359</color>
+    <!-- connet背景颜色 FDFAF5 -->
+    <color name="connet_bgColor">#f2f2f2</color>
 
     <!-- 底部导航栏背景颜色-->
     <color name="bottom_bgColor">#FAFAFA</color>
