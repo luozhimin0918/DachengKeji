@@ -133,7 +133,7 @@
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="第三方账户直接登录"
+                        android:text="第三方账户登录"
                         android:textColor="#D4D4D4"
                         android:textSize="15sp" />
                 <ImageView
